@@ -46,10 +46,10 @@ class Robot(object):
         else:
             # TODO 2. Update parameters when learning
             self.t += 1
-            if(this.epsilon <0.01):
-            	this.epsilon = 0.01
+            if(self.epsilon <0.01):
+            	self.epsilon = 0.01
             else:
-            	this.epsilon = this.epsilon - 0.01*t
+            	self.epsilon = self.epsilon - 0.01*self.t
         return self.epsilon
 
     def sense_state(self):
@@ -72,7 +72,7 @@ class Robot(object):
         # not change it.
         print("create_Qtable_line",state)
         print("create_Qtable_line",self.Qtable)
-        if(not(state in self.Qtable)):
+        if(state not in self.Qtable):
         	self.Qtable[state] = {'u':0.0,'r':0.0,'d':0.0,'l':0.0}
 
 
@@ -126,7 +126,7 @@ class Robot(object):
             print(type(self.gamma))
             print(type(max(self.Qtable[next_state].values())))
             q_temp = r+self.gamma*max(self.Qtable[next_state].values())
-            self.Qtable[self.state][action] = (1-self.gamma)*self.Qtable[self.state][action] + self.gamma*(r+self.gamma*q_temp)
+            self.Qtable[self.state][action] = (1-self.alpha)*self.Qtable[self.state][action] + self.alpha*(r+self.gamma*q_temp)
             print("update_Qtable***********",self.Qtable[self.state])
 
     def update(self):
@@ -151,6 +151,6 @@ class Robot(object):
         print("next_state_q",self.Qtable)
         if self.learning and not self.testing:
             self.update_Qtable(reward, action, next_state) # update q table
-        #    self.update_parameter() # update parameters
+            self.update_parameter() # update parameters
 		
         return action, reward
